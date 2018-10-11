@@ -20,8 +20,30 @@ namespace DeliveryService
     public partial class DeliveryServiceDirectorDialogBox : Window
     {
         public DeliveryServiceDirectorDialogBox()
-        {
+        { 
             InitializeComponent();
+
+            lv_DeliveryList.ItemsSource = App.deliveryViewModel.Items;
+        }
+
+        private void btnAdd_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void btnRemove_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void lvDeliveryList_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("d");
         }
     }
 }

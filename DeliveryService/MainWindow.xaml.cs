@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 
 namespace DeliveryService
 {
@@ -23,20 +24,31 @@ namespace DeliveryService
         public MainWindow()
         {
             InitializeComponent();
+
+            DeliveryInit();
+
+            DispatcherTimer dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Interval = TimeSpan.FromMinutes(5);
+            dispatcherTimer.Tick += DispatcherTimer_Tick;
+            dispatcherTimer.Start();
         }
 
-        private void Btn_PostReg_Click(object sender, RoutedEventArgs e)
+        private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
-            DeliveryServiceRegDialogBox regDlg = new DeliveryServiceRegDialogBox();
-
-            regDlg.ShowDialog();
+            throw new NotImplementedException();
         }
 
-        private void Btn_PostDirector_Click(object sender, RoutedEventArgs e)
+        private void DeliveryInit()
         {
-            DeliveryServiceDirectorDialogBox directorDlg = new DeliveryServiceDirectorDialogBox();
+            App.deliveryViewModel.LoadData(App.dbManager.DB_Select());
 
-            directorDlg.ShowDialog();
+            lv_DeliveryList.ItemsSource = App.deliveryViewModel.Items;
+            //gd_DeliveryList.ItemsSource = App.deliveryViewModel.Items;
+        }
+
+        private void bnt_Insert_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

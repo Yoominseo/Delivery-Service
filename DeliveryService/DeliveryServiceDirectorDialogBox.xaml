@@ -4,11 +4,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DeliveryService"
+        xmlns:Controls="clr-namespace:DeliveryService.Controls"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen" 
         ShowInTaskbar="False"
-        Title="택배 관리" Height="300" Width="300">
-    <Grid>
-        
+        Title="택배 관리" Height="300" Width="450">
+    <Window.Resources>
+        <Style x:Key="itemstyle" TargetType="{x:Type ListViewItem}">
+            <EventSetter Event="MouseDoubleClick" Handler="lvDeliveryList_MouseDoubleClick" />
+        </Style>
+    </Window.Resources>
+    <Grid x:Name="gdMain">
+        <Grid>
+            <ListView x:Name="lv_DeliveryList">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <Controls:DeliveryBoardControl/>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </Grid>
     </Grid>
 </Window>

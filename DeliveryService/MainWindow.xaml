@@ -4,16 +4,45 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DeliveryService"
+        xmlns:Controls="clr-namespace:DeliveryService.Controls"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen" 
         Title="택배 찾기" Height="500" Width="1000">
-    <Grid Margin="100">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="5*"/>
-            <ColumnDefinition Width="5*"/>
-        </Grid.ColumnDefinitions>
-
-        <Button Margin="100" Grid.Column="0" x:Name="btn_PostReg" Click="Btn_PostReg_Click">택배 등록</Button>
-        <Button Margin="100" Grid.Column="1" x:Name="btn_PostDirector" Click="Btn_PostDirector_Click" >택배 관리</Button>
+    <Grid>
+        <!--<DataGrid x:Name="gd_DeliveryList" Margin="100" Style="{StaticResource DataGridStyle}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="번호" Width="Auto" Binding="{Binding Path = Id}"/>
+                <DataGridTextColumn Header="이름" Width="Auto" Binding="{Binding Path = Name}"/>
+                <DataGridTextColumn Header="배송 정보">
+                    --><!--<DataGridTextColumn.Binding>
+                        <MultiBinding>
+                            <Binding Path="Company"/>
+                            <Binding Path="Invoice"/>
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>--><!--
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="최근 배송지점" Width="Auto" CanUserResize="False" Binding="{Binding Path = LastDetail}" />
+                <DataGridTextColumn Header="배송 완료" Width="Auto" Binding="{Binding Path = Id}"/>
+            </DataGrid.Columns> 
+        </DataGrid>-->
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" x:Name="bnt_Insert" Click="bnt_Insert_Click" Width="50" Content="+" HorizontalAlignment="Right" Margin="0,10,30,0"/>
+        <ListView Grid.Row="1" x:Name="lv_DeliveryList" Margin="30">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Controls:DeliveryBoardControl/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Window>

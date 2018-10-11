@@ -11,6 +11,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Text.RegularExpressions;
+using SQLite;
+using static DeliveryService.DBQuery;
+using System.Diagnostics;
 
 namespace DeliveryService
 {
@@ -26,16 +30,19 @@ namespace DeliveryService
 
         private void OkBtn_Click(object sender, RoutedEventArgs e)
         {
+            
             List<String> list = new List<String>();
-            String message = "";
+            string message = "";
 
-            String postCompany = ((ComboBoxItem)combo_PostCompany.SelectedItem).Content.ToString();
+            string postName = tb_PostName.Text;
+            string postCompany = ((ComboBoxItem)cb_PostCompany.SelectedItem).Content.ToString();
+            
 
             if (tb_PostName.Text.Equals("") || postCompany.Equals("---택배사를 선택해주세요---") || tb_PostNumber.Text.Equals(""))
             {
                 int cnt = 0;
 
-                if (tb_PostName.Text.Equals(""))
+                if (postName.Equals(""))
                     list.Add("택배 명칭");
 
                 if (postCompany.Equals("---택배사를 선택해주세요---"))
@@ -55,17 +62,37 @@ namespace DeliveryService
             }
             else
             {
+                string postNumber = tb_PostNumber.Text;
+
                 MessageBoxResult result;
-                result = MessageBox.Show("택배 명칭 : '" + tb_PostName.Text + "'\n" 
+                result = MessageBox.Show("택배 명칭 : '" + postName + "'\n" 
                                          + "택배사 : '" + postCompany + "'\n" 
-                                        + "운송장 번호 : '" + tb_PostNumber.Text + "'",
-                    "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                                        + "운송장 번호 : '" + postNumber + "'"
+                                        ,"Question", MessageBoxButton.YesNo, MessageBoxImage.Warning);
 
                 if (result == MessageBoxResult.Yes)
                 {
-                    MessageBox.Show("YES", "YES");
+                    bool db_result = App.dbManager.Insert(postName, postCompany, postNumber);
+
+                    if (db_result)
+                    {
+                        MessageBox.Show("데이터 삽입 오류!", "ERROR", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+                        tb_PostName.Text = tb_PostNumber.Text = "";
+                        cb_PostCompany.SelectedIndex = 0;
+                        App.deliveryViewModel.LoadData(App.dbManager.DB_Select());
+                        MessageBox.Show("택배가 등록 되었습니다.", "성공", MessageBoxButton.OK, MessageBoxImage.None);
+                    }
                 }
             }
+        }
+
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        {
+            Regex regex = new Regex("[^0-9]+"); 
+            e.Handled = regex.IsMatch(e.Text);
         }
     }
 }
